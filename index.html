@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="uz" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08090c" />
+    <meta name="description" content="Revenue — natijaga asoslangan marketing agentligi. Strategiya, kontent, reklama va analitika yagona tizimda." />
+    <meta property="og:title" content="Revenue — Marketingni daromadga aylantiramiz" />
+    <meta property="og:description" content="Natijaga asoslangan marketing tizimi." />
+    <meta property="og:type" content="website" />
+    <title>Revenue — Marketingni daromadga aylantiramiz</title>
+    <script>
+      (() => {
+        const saved = localStorage.getItem('revenue-theme');
+        const system = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.dataset.theme = saved || system;
+      })();
+    </script>
+    <link rel="icon" href="/assets/logo/revenue-mark.webp" type="image/webp" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
