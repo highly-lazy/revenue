@@ -48,6 +48,7 @@ export const content = {
     worksDesc:
       'Har bir loyiha uchun vizual, kontent va reklama yechimlari biznes maqsadiga mos ravishda ishlab chiqiladi.',
     projects: ['Azizon', 'Chorvachi', 'Rail City', 'Visola', 'Tosh Stone', 'Minor Group', 'Tabriz', 'PureMilky', 'Marg‘ilon Plaza', 'Osh Palove'],
+    clientsLabel: 'Biz bilan hamkorlikda ishlagan brendlar',
     processKicker: 'Ishlash jarayoni',
     processTitle: ['Tasodif emas.', 'Tizimli natija.'],
     processDesc: 'Har bir bosqich o‘lchanadi. Har bir qaror biznes maqsadiga bog‘lanadi.',
@@ -129,6 +130,7 @@ export const content = {
     worksDesc:
       'Для каждого проекта визуал, контент и реклама разрабатываются под конкретную бизнес-цель.',
     projects: ['Azizon', 'Chorvachi', 'Rail City', 'Visola', 'Tosh Stone', 'Minor Group', 'Tabriz', 'PureMilky', 'Marg‘ilon Plaza', 'Osh Palove'],
+    clientsLabel: 'Бренды, с которыми мы работали',
     processKicker: 'Процесс работы',
     processTitle: ['Не случайность.', 'Системный результат.'],
     processDesc: 'Каждый этап измеряется. Каждое решение связано с бизнес-целью.',

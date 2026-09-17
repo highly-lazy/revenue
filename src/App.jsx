@@ -4,9 +4,30 @@ import logoLight from '../assets/logo/revenue-logo-light.webp';
 import revenueMark from '../assets/logo/revenue-mark.webp';
 import heroChess from '../assets/images/hero-chess.webp';
 import siteReference from '../assets/images/site-reference.webp';
+import logoAzizon from '../assets/logos/clients/azizon.webp';
+import logoPureMilky from '../assets/logos/clients/puremilky.webp';
+import logoVisola from '../assets/logos/clients/visola.webp';
+import logoChorvachi from '../assets/logos/clients/chorvachi.webp';
+import logoMinorGroup from '../assets/logos/clients/minor-group.webp';
+import logoGoldLavash from '../assets/logos/clients/gold-lavash.webp';
+import logoFamilyEnglishSchool from '../assets/logos/clients/family-english-school.webp';
+import logoRailCity from '../assets/logos/clients/railcity.webp';
+import logoTaraqqiyot from '../assets/logos/clients/taraqqiyot.webp';
 import { content } from './content';
 
 const navTargets = ['#services', '#works', '#process', '#about', '#contact'];
+
+const clientLogos = [
+  { name: 'Azizon', src: logoAzizon, fit: 'contain' },
+  { name: 'PureMilky', src: logoPureMilky, fit: 'contain' },
+  { name: 'Visola', src: logoVisola, fit: 'contain' },
+  { name: 'Chorvachi', src: logoChorvachi, fit: 'cover' },
+  { name: 'Minor Group', src: logoMinorGroup, fit: 'cover' },
+  { name: 'Gold Lavash', src: logoGoldLavash, fit: 'cover' },
+  { name: 'Family English School', src: logoFamilyEnglishSchool, fit: 'cover' },
+  { name: 'RailCity', src: logoRailCity, fit: 'cover' },
+  { name: 'Taraqqiyot', src: logoTaraqqiyot, fit: 'cover' },
+];
 
 function Icon({ name, size = 24 }) {
   const common = {
@@ -438,8 +459,13 @@ function App() {
               ))}
             </div>
 
-            <div className="client-ticker" data-reveal>
-              {[...copy.projects, ...copy.projects].map((project, index) => <span key={`${project}-${index}`}>{project}</span>)}
+            <p className="clients-label" data-reveal>{copy.clientsLabel}</p>
+            <div className="client-logos" data-reveal>
+              {clientLogos.map((client) => (
+                <div className={`client-logo-card ${client.fit === 'contain' ? 'is-badge' : ''}`} key={client.name}>
+                  <img src={client.src} alt={client.name} loading="lazy" />
+                </div>
+              ))}
             </div>
           </div>
         </section>

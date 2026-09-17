@@ -279,9 +279,13 @@ button { color: inherit; }
 .project-copy small { color: rgba(255,255,255,.42); font-size: 9px; text-transform: uppercase; letter-spacing: .16em; }
 .project-copy h3 { margin: 6px 0 0; font: 620 23px var(--font-display); }
 .project-copy > span { color: rgba(255,255,255,.36); font-size: 11px; }
-.client-ticker { display: flex; overflow: hidden; border-block: 1px solid rgba(255,255,255,.1); margin-top: 55px; }
-.client-ticker span { flex: 0 0 auto; padding: 24px 36px; border-right: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.45); font: 600 14px var(--font-display); transition: color .2s; }
-.client-ticker span:hover { color: var(--gold-bright); }
+.clients-label { margin: 55px 0 18px; color: rgba(255,255,255,.42); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .2em; }
+.client-logos { display: grid; grid-template-columns: repeat(6,1fr); gap: 14px; }
+.client-logo-card { position: relative; aspect-ratio: 3/2; overflow: hidden; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: #101114; transition: border-color .3s,transform .3s; }
+.client-logo-card:hover { transform: translateY(-4px); border-color: rgba(228,161,27,.5); }
+.client-logo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.client-logo-card.is-badge { background: #fdfcf9; padding: 14px 18px; }
+.client-logo-card.is-badge img { object-fit: contain; }
 
 /* process */
 .process-section { overflow: clip; }
@@ -397,6 +401,7 @@ button { color: inherit; }
   .works-grid { grid-template-columns: 1fr; }
   .project-card:nth-child(n) { grid-column: 1; }
   .project-card-wide .project-visual,.project-visual { min-height: 430px; }
+  .client-logos { grid-template-columns: repeat(4,1fr); }
   .process-grid { grid-template-columns: 1fr; gap: 60px; }
   .process-intro { position: relative; top: auto; }
   .process-compass { display: none; }
@@ -434,7 +439,8 @@ button { color: inherit; }
   .service-card h3 { margin-top: 38px; }
   .project-card-wide .project-visual,.project-visual { min-height: 340px; }
   .project-hover { width: 108px; height: 108px; font-size: 10px; }
-  .client-ticker span { padding: 20px 25px; }
+  .client-logos { grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .client-logo-card.is-badge { padding: 10px 12px; }
   .process-list li { grid-template-columns: 48px 1fr; min-height: 190px; padding-block: 20px; }
   .process-list > li > svg { display: none; }
   .process-list li:hover { padding-inline: 0; }
