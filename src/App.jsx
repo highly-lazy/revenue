@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Routes, Route, Link, useLocation, useParams } from 'react-router-dom';
 import logoDark from '../assets/logo/revenue-logo-dark.webp';
 import logoLight from '../assets/logo/revenue-logo-light.webp';
 import revenueMark from '../assets/logo/revenue-mark.webp';
 import heroChess from '../assets/images/hero-chess.webp';
-import siteReference from '../assets/images/site-reference.webp';
 import logoAzizon from '../assets/logos/clients/azizon.webp';
 import logoPureMilky from '../assets/logos/clients/puremilky.webp';
 import logoVisola from '../assets/logos/clients/visola.webp';
@@ -29,7 +29,14 @@ const clientLogos = [
   { name: 'Taraqqiyot', src: logoTaraqqiyot, fit: 'cover' },
 ];
 
-function Icon({ name, size = 24 }) {
+const worksProjects = [
+  { slug: 'azizon', logo: logoAzizon, fit: 'contain' },
+  { slug: 'chorvachi', logo: logoChorvachi, fit: 'cover' },
+  { slug: 'rail-city', logo: logoRailCity, fit: 'cover' },
+  { slug: 'visola', logo: logoVisola, fit: 'contain' },
+];
+
+function Icon({ name, size = 24, ...rest }) {
   const common = {
     width: size,
     height: size,
@@ -40,6 +47,7 @@ function Icon({ name, size = 24 }) {
     strokeLinecap: 'round',
     strokeLinejoin: 'round',
     'aria-hidden': true,
+    ...rest,
   };
 
   const icons = {
@@ -181,6 +189,47 @@ function SpotlightCard({ children, className = '', ...props }) {
   return <div ref={ref} onPointerMove={onMove} onPointerLeave={onLeave} className={`spotlight-card ${className}`} {...props}>{children}</div>;
 }
 
+function ProjectPage({ lang, copy }) {
+  const { slug } = useParams();
+  const index = worksProjects.findIndex((item) => item.slug === slug);
+  const project = worksProjects[index];
+  const title = index >= 0 ? copy.projects[index] : slug;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
+
+  return (
+    <section className="section project-page">
+      <div className="container project-page-inner">
+        <Link className="text-link project-page-back" to="/#works">
+          <Icon name="arrow" size={18} style={{ transform: 'rotate(180deg)' }} />
+          {lang === 'uz' ? 'Ishlarimizga qaytish' : 'Назад к проектам'}
+        </Link>
+
+        {project ? (
+          <>
+            <div className="project-page-logo">
+              <img src={project.logo} alt={title} className={`project-logo fit-${project.fit}`} />
+            </div>
+            <p className="kicker">Case study</p>
+            <h1>{title}</h1>
+            <p className="project-page-note">
+              {lang === 'uz'
+                ? 'Bu loyihaning to‘liq case-study sahifasi tez orada shu yerda joylashtiriladi.'
+                : 'Полная страница кейса по этому проекту скоро появится здесь.'}
+            </p>
+          </>
+        ) : (
+          <p className="project-page-note">
+            {lang === 'uz' ? 'Loyiha topilmadi.' : 'Проект не найден.'}
+          </p>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const [lang, setLang] = useState('uz');
   const [theme, setTheme] = useState(() => document.documentElement.dataset.theme || 'dark');
@@ -189,6 +238,13 @@ function App() {
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const heroRef = useRef(null);
   const copy = useMemo(() => content[lang], [lang]);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname !== '/' || !location.hash) return;
+    const target = document.querySelector(location.hash);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -301,8 +357,6 @@ function App() {
     window.open('https://t.me/revenueceo', '_blank', 'noopener,noreferrer');
   };
 
-  const projectArt = ['project-image', 'project-orbit', 'project-grid-art', 'project-type'];
-
   return (
     <>
       {!introDone && <Preloader onDone={() => setIntroDone(true)} />}
@@ -312,13 +366,13 @@ function App() {
 
       <header className={`site-header ${headerScrolled ? 'is-scrolled' : ''}`} id="top">
         <div className="container nav-wrap">
-          <a className="brand" href="#top" aria-label="Revenue bosh sahifa">
+          <Link className="brand" to="/" aria-label="Revenue bosh sahifa">
             <img className="logo logo-on-dark" src={logoDark} alt="Revenue marketing" />
             <img className="logo logo-on-light" src={logoLight} alt="Revenue marketing" />
-          </a>
+          </Link>
 
           <nav className="desktop-nav" aria-label="Asosiy navigatsiya">
-            {copy.nav.map((item, index) => <a key={item} href={navTargets[index]}><span>{item}</span></a>)}
+            {copy.nav.map((item, index) => <Link key={item} to={`/${navTargets[index]}`}><span>{item}</span></Link>)}
           </nav>
 
           <div className="nav-actions">
@@ -337,7 +391,7 @@ function App() {
               <span><i /></span>
               <Icon name="moon" size={14} />
             </button>
-            <a className="button button-outline desktop-cta" href="#contact">{copy.cta}</a>
+            <Link className="button button-outline desktop-cta" to="/#contact">{copy.cta}</Link>
             <button className="menu-toggle" type="button" aria-label="Menyuni ochish" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
               <Icon name={menuOpen ? 'close' : 'menu'} size={24} />
             </button>
@@ -351,9 +405,9 @@ function App() {
           <span className="mobile-menu-label">Revenue / Menu</span>
           <nav>
             {copy.nav.map((item, index) => (
-              <a key={item} href={navTargets[index]} onClick={() => setMenuOpen(false)}>
+              <Link key={item} to={`/${navTargets[index]}`} onClick={() => setMenuOpen(false)}>
                 <small>0{index + 1}</small><span>{item}</span><Icon name="arrow" size={22} />
-              </a>
+              </Link>
             ))}
           </nav>
           <div className="mobile-menu-footer">
@@ -364,6 +418,10 @@ function App() {
       </div>
 
       <main id="main" className={introDone ? 'site-ready' : ''}>
+      <Routes>
+        <Route path="/works/:slug" element={<ProjectPage lang={lang} copy={copy} />} />
+        <Route path="/" element={(
+          <>
         <section className="hero" ref={heroRef} onPointerMove={onHeroMove} aria-labelledby="hero-title">
           <div className="hero-background" style={{ backgroundImage: `url(${heroChess})` }} />
           <div className="hero-overlay" />
@@ -445,27 +503,30 @@ function App() {
             </div>
 
             <div className="works-grid">
-              {copy.projects.slice(0, 4).map((project, index) => (
-                <article className={`project-card ${index === 0 ? 'project-card-wide' : ''}`} key={project} data-reveal>
-                  <div className={`project-visual ${projectArt[index]}`} style={index === 0 ? { backgroundImage: `linear-gradient(180deg,rgba(5,6,8,.04),rgba(5,6,8,.82)),url(${siteReference})` } : undefined}>
-                    <span className="project-number">0{index + 1}</span>
-                    {index === 1 && <><i className="orbit orbit-a" /><i className="orbit orbit-b" /><b>R</b></>}
-                    {index === 2 && <div className="mini-grid"><i /><i /><i /><i /><i /><i /><i /><i /><i /></div>}
-                    {index === 3 && <div className="kinetic-word">GROWTH</div>}
-                    <div className="project-hover"><span>{lang === 'uz' ? 'Loyihani ko‘rish' : 'Смотреть проект'}</span><Icon name="arrow" size={21} /></div>
-                  </div>
-                  <div className="project-copy"><div><small>Strategy / Creative / Digital</small><h3>{project}</h3></div><span>2026</span></div>
-                </article>
-              ))}
+              {copy.projects.slice(0, 4).map((project, index) => {
+                const item = worksProjects[index];
+                return (
+                  <article className={`project-card ${index === 0 ? 'project-card-wide' : ''}`} key={project} data-reveal>
+                    <Link className="project-visual" to={`/works/${item.slug}`}>
+                      <img src={item.logo} alt={project} className={`project-logo fit-${item.fit}`} />
+                      <span className="project-number">0{index + 1}</span>
+                      <span className="project-hover"><span>{lang === 'uz' ? 'Loyihani ko‘rish' : 'Смотреть проект'}</span><Icon name="arrow" size={21} /></span>
+                    </Link>
+                    <div className="project-copy"><div><small>Strategy / Creative / Digital</small><h3>{project}</h3></div><span>2026</span></div>
+                  </article>
+                );
+              })}
             </div>
 
             <p className="clients-label" data-reveal>{copy.clientsLabel}</p>
-            <div className="client-logos" data-reveal>
-              {clientLogos.map((client) => (
-                <div className={`client-logo-card ${client.fit === 'contain' ? 'is-badge' : ''}`} key={client.name}>
-                  <img src={client.src} alt={client.name} loading="lazy" />
-                </div>
-              ))}
+            <div className="client-logos-marquee" data-reveal>
+              <div className="client-logos-track">
+                {[...clientLogos, ...clientLogos].map((client, index) => (
+                  <div className={`client-logo-card ${client.fit === 'contain' ? 'is-badge' : ''}`} key={`${client.name}-${index}`}>
+                    <img src={client.src} alt={client.name} loading="lazy" />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -540,15 +601,18 @@ function App() {
             </form>
           </div>
         </section>
+          </>
+        )} />
+      </Routes>
       </main>
 
       <footer className="footer">
         <div className="container footer-top">
-          <a className="brand" href="#top"><img className="logo logo-on-dark" src={logoDark} alt="Revenue" /><img className="logo logo-on-light" src={logoLight} alt="Revenue" /></a>
+          <Link className="brand" to="/"><img className="logo logo-on-dark" src={logoDark} alt="Revenue" /><img className="logo logo-on-light" src={logoLight} alt="Revenue" /></Link>
           <p>{copy.footer}</p>
           <div><a href="https://instagram.com/revenue_uz" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://t.me/revenueceo" target="_blank" rel="noreferrer">Telegram ↗</a></div>
         </div>
-        <div className="container footer-bottom"><span>© {new Date().getFullYear()} Revenue Marketing.</span><span>{copy.rights}</span><a href="#top">Top ↑</a></div>
+        <div className="container footer-bottom"><span>© {new Date().getFullYear()} Revenue Marketing.</span><span>{copy.rights}</span><Link to="/#top">Top ↑</Link></div>
       </footer>
     </>
   );
